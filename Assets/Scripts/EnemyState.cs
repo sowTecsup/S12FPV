@@ -51,7 +51,7 @@ public class EnemyState : MonoBehaviour
                 {
 
                     Vector3 direction = (targetPos - myPos).normalized;
-                    transform.position += -direction * Speed * Time.deltaTime;
+                    transform.position += direction * Speed * Time.deltaTime;
 
                     if (Vector3.Distance(targetPos, myPos) > DetectionRadius)
                         state = EnemyEnum.Idle;
@@ -87,44 +87,6 @@ public class EnemyState : MonoBehaviour
                 break;
             default:
                 break;
-        }
-    }
-    public void FollowTarget()
-    {
-        Vector3 targetPos = Target.transform.position;
-        Vector3 myPos = transform.position;
-
-        Vector3 direction = (targetPos - myPos).normalized;
-
-        //->Si mi distancia entre mi posicion y mi objetivo es menor a mi radio de movimiento lo sigo!
-        if (Vector3.Distance(targetPos, myPos) < DetectionRadius)
-        {
-
-            if (Vector3.Distance(targetPos, myPos) < AttackRaius)
-            {
-                if (isAbleToAttack)
-                {
-                    //->GetComponent
-                    Debug.Log("Atacando");
-                    Target.GetComponent<Player>().Health -= damage;
-                    isAbleToAttack = false;
-                }
-            }
-            else
-            {
-                transform.position += -direction * Speed * Time.deltaTime;
-            }
-        }
-    }
-    public void TimerToDoSmt()
-    {
-        currentTime += Time.deltaTime;
-        if (currentTime >= MaxTime)
-        {
-            //-> ejecutar algo
-            isAbleToAttack = true;
-
-            currentTime = 0;
         }
     }
 }
