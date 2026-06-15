@@ -42,9 +42,6 @@ public class EnemyState : MonoBehaviour
                 break;
             case EnemyEnum.Idle:
                 {
-
-
-
                    
                     if (Vector3.Distance(targetPos, myPos) < DetectionRadius)
                         state = EnemyEnum.Chase;
@@ -53,7 +50,8 @@ public class EnemyState : MonoBehaviour
             case EnemyEnum.Chase:
                 {
 
-
+                    Vector3 direction = (targetPos - myPos).normalized;
+                    transform.position += -direction * Speed * Time.deltaTime;
 
                     if (Vector3.Distance(targetPos, myPos) > DetectionRadius)
                         state = EnemyEnum.Idle;
@@ -64,7 +62,23 @@ public class EnemyState : MonoBehaviour
                 break;
             case EnemyEnum.Attack:
                 {
+                    if (isAbleToAttack)
+                    {
+                        //->GetComponent
+                        Debug.Log("Atacando");
+                        Target.GetComponent<Player>().Health -= damage;
+                        isAbleToAttack = false;
+                    }
 
+
+                    currentTime += Time.deltaTime;
+                    if (currentTime >= MaxTime)
+                    {
+                        //-> ejecutar algo
+                        isAbleToAttack = true;
+
+                        currentTime = 0;
+                    }
 
 
                     if (Vector3.Distance(targetPos, myPos) > AttackRaius)
@@ -74,15 +88,6 @@ public class EnemyState : MonoBehaviour
             default:
                 break;
         }
-
-
-
-
-
-
-        FollowTarget();
-        if (!isAbleToAttack)
-            TimerToDoSmt();
     }
     public void FollowTarget()
     {
